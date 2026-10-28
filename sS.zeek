@@ -8,7 +8,7 @@ global a: table[addr] of table[addr] of ipRec;
 global threshold: int = 100;
 
 redef enum Notice::Type += {
-	sT_Port_Scanning,
+	sS_Port_Scanning,
 };
 
 function raiseNotice(orig_host: addr, resp_host: addr)
