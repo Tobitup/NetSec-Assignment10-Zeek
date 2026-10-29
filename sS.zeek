@@ -16,7 +16,7 @@ function raiseNotice(orig_host: addr, resp_host: addr)
 	local i: int = |a[orig_host][resp_host]$openPorts| + |a[orig_host][resp_host]$closedPorts|;
 	if (modulo(i, threshold) == 0)
 	{
-		NOTICE([$note=sT_Port_Scanning,
+		NOTICE([$note=sS_Port_Scanning,
         $msg=fmt("%s appears to port scanning using nmap -sS. Amount of ports likely scanned %d. Notice nr. %d",
                  orig_host, i, a[orig_host][resp_host]$noticeCounter)]);
 		a[orig_host][resp_host]$noticeCounter += 1;
