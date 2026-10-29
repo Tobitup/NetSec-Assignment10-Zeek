@@ -5,7 +5,7 @@ type ipRec: record {
 };
 
 global a: table[addr] of table[addr] of ipRec;
-global threshold: int = 100;
+global threshold: int = 90;
 
 redef enum Notice::Type += {
 	sS_Port_Scanning,
@@ -17,13 +17,16 @@ function raiseNotice(orig_host: addr, resp_host: addr)
 	if (modulo(i, threshold) == 0)
 	{
 		NOTICE([$note=sS_Port_Scanning,
-        $msg=fmt("%s appears to port scanning using nmap -sS. Amount of ports likely scanned %d. Notice nr. %d",
-                 orig_host, i, a[orig_host][resp_host]$noticeCounter)]);
+        $msg=fmt("%s appears to port scanning using nmap -sS. Amount of ports likely scanned %d. Notice nr. %d. Openports %d",
+                 orig_host, 
+				 i, 
+				 a[orig_host][resp_host]$noticeCounter, 
+				 |a[orig_host][resp_host]$openPorts|)]);
 		a[orig_host][resp_host]$noticeCounter += 1;
 	}
 	}
 
-event connection_state_remove(c : connection)
+event connection_reset(c : connection)
 	{
 	local originator_host: addr = c$id$orig_h;
 	local responder_host: addr = c$id$resp_h;
@@ -68,8 +71,13 @@ event connection_rejected(c: connection)
 		a[originator_host][responder_host] = [$noticeCounter=0, $openPorts=empty_ports, $closedPorts=set(responder_port)];
 		return;
 	}
-	a[originator_host][responder_host]$closedPorts += set(responder_port);
-    raiseNotice(originator_host, responder_host);
+	
+	if ( responder_port !in a[originator_host][responder_host]$closedPorts )
+		{
+			a[originator_host][responder_host]$closedPorts += set(responder_port);
+			raiseNotice(originator_host, responder_host);
+		}
+
     }
 
 event zeek_done()
