@@ -1,14 +1,3 @@
-
-# Raise a Notice when a threshold is reached
-# Startover counting
-# In the msg of the Notice, include the number of previous Notices for the same scan.
-
-# Use connection_reset event, for every event check Port and Source IP, if IP == recIP and Port != recPort, or a list of ports then count this.
-
-# Hold a table of IP's and Ports to each IP, everytime an IP disconnects a with RST packet on a new port, add one to table
-# When Threshold mod Count == 0
-
-
 type ipRec: record {
     noticeCounter: int;
     openPorts: set[port];
