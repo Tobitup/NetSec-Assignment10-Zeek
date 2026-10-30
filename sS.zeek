@@ -5,7 +5,7 @@ type ipRec: record {
 };
 
 global a: table[addr] of table[addr] of ipRec;
-global threshold: int = 90;
+global threshold: int = 100;
 
 redef enum Notice::Type += {
 	sS_Port_Scanning,
