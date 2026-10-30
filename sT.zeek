@@ -17,7 +17,7 @@ function raiseNotice(orig_host: addr, resp_host: addr)
 	if (modulo(i, threshold) == 0)
 	{
 		NOTICE([$note=sT_Port_Scanning,
-        $msg=fmt("%s appears to port scanning using nmap -sS. Amount of ports likely scanned %d. Notice nr. %d. Openports %d",
+        $msg=fmt("%s appears to port scanning using nmap -sT. Amount of ports likely scanned %d. Notice nr. %d. Openports %d",
                  orig_host, 
 				 i, 
 				 a[orig_host][resp_host]$noticeCounter, 
